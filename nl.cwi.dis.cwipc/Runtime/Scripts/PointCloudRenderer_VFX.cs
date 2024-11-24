@@ -148,62 +148,6 @@ namespace Cwipc
                 pointBuffer = null;
             }
         }
-#if xxxjack_old
-        private int ExtractDataFromComputeBuffer(ComputeBuffer computeBuffer, ref Vector4[] pointPositions, ref Color[] pointColors)
-        {
-            if (computeBuffer == null || computeBuffer.count == 0)
-            {
-                pointPositions = new Vector4[0];
-                pointColors = new Color[0];
-                return 0;
-            }
-
-            // Get the point count from the compute buffer
-            int nPoints = computeBuffer.count;
-
-            // Ensure arrays are correctly sized
-            if (pointPositions == null || pointPositions.Length != nPoints)
-            {
-                pointPositions = new Vector4[nPoints];
-            }
-            if (pointColors == null || pointColors.Length != nPoints)
-            {
-                pointColors = new Color[nPoints];
-            }
-
-            // Allocate a buffer to retrieve data from the compute buffer
-            byte[] bufferData = new byte[nPoints * sizeof(float) * 4];
-
-            // Get the data from the compute buffer
-            computeBuffer.GetData(bufferData);
-
-            const int sizeofPoint = sizeof(float) * 4; // x, y, z, and packed color
-
-            // Extract points and colors from the buffer
-            for (int i = 0; i < nPoints; i++)
-            {
-                // Extract position (x, y, z) from the buffer
-                float x = BitConverter.ToSingle(bufferData, i * sizeofPoint);
-                float y = BitConverter.ToSingle(bufferData, i * sizeofPoint + sizeof(float));
-                float z = BitConverter.ToSingle(bufferData, i * sizeofPoint + 2 * sizeof(float));
-                float w = BitConverter.ToSingle(bufferData, i * sizeofPoint + 3 * sizeof(float));
-
-                // Extract packed color data (RGBA)
-                uint packedColor = BitConverter.ToUInt32(bufferData, i * sizeofPoint + 3 * sizeof(float));
-
-                // Populate the position array
-                pointPositions[i] = new Vector4(x, y, z, w);
-
-                // Decode and populate the color array
-                float r = ((packedColor >> 16) & 0xFF) / 255.0f;
-                float g = ((packedColor >> 8) & 0xFF) / 255.0f;
-                float b = (packedColor & 0xFF) / 255.0f;
-                pointColors[i] = new Color(r, g, b, 1.0f);
-            }
-
-            return nPoints;
-        }
-#endif
 
 #if VRT_WITH_STATS
         protected class Stats : Statistics
