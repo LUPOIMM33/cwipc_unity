@@ -13,8 +13,9 @@ public class PointCloud_VFX : MonoBehaviour
     public GraphicsBuffer positionBuffer;
     public GraphicsBuffer colorBuffer;
 
-    public void PassToVFX(Vector4[] positions, Color[] colors)
+    public void PassToVFX(GraphicsBuffer pointBuffer, int nPoint, float PointSize)
     {
+#if xxxjack_old
         if (positions == null || colors == null || positions.Length == 0 || colors.Length == 0)
         {
             Debug.LogWarning("Positions or colors array is empty. Skipping PassToVFX.");
@@ -39,7 +40,11 @@ public class PointCloud_VFX : MonoBehaviour
         // Set data in buffers
         positionBuffer.SetData(positions);
         colorBuffer.SetData(colors);
-
+#else
+    vfxGraph.SetGraphicsBuffer(positionParameterName, pointBuffer);
+    vfxGraph.SetInt(pointCountName, nPoint);
+//    vfxGraph.SetInt(pointSizeName, pointSize);
+#endif
     }
 
     public void PassToVFX(GraphicsBuffer positions_GraphicBuffer, GraphicsBuffer colors_GraphicBuffer)
@@ -59,7 +64,7 @@ public class PointCloud_VFX : MonoBehaviour
 
     void OnDestroy()
     {
-        // Release the buffers when they’re no longer needed
+        // Release the buffers when theyï¿½re no longer needed
         positionBuffer?.Release();
         colorBuffer?.Release();
     }

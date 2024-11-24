@@ -17,11 +17,7 @@ namespace Cwipc
     /// </summary>
     public class PointCloudRenderer : MonoBehaviour
     {
-        // For reasons I don't understand pointclouds need to be mirrored in the X direction.
-        // Doing this on the GameObject.transform has the drawback that coordinate systems
-        // become mirrored, for example when cropping a pointcloud. Therefore, we mirror here,
-        // by adjusting the matrix.
-        ComputeBuffer pointBuffer = null;
+        GraphicsBuffer pointBuffer = null;
         int pointCount = 0;
         [Header("Settings")]
         [Tooltip("Source of pointclouds. Can (and must) be empty if set dynamically through script.")]
@@ -106,7 +102,7 @@ namespace Cwipc
 #if VRT_WITH_STATS
             stats = new Stats(Name());
 #endif
-            pointBuffer = new ComputeBuffer(1, sizeof(float) * 4);
+            pointBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, 1, sizeof(float) * 4);
             if (pointcloudSource != null)
             {
                 SetPreparer(pointcloudSource);
@@ -172,7 +168,7 @@ namespace Cwipc
                     block.SetFloat("_PointSizeFactor", 1.0f);
                 }
                 dataIsMissing = false;
-                pointCount = preparer.GetComputeBuffer(ref pointBuffer);
+                pointCount = preparer.FillGraphicsBuffer(ref pointBuffer);
                 pointCountMostRecentReception = pointCount;
                 pointSize = preparer.GetPointSize() * pointSizeFactor;
                 pointSizeMostRecentReception = pointSize;

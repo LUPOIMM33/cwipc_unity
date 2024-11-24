@@ -90,7 +90,7 @@ namespace Cwipc
             }
         }
 
-        public override int GetComputeBuffer(ref ComputeBuffer computeBuffer)
+        public override int FillGraphicsBuffer(ref GraphicsBuffer computeBuffer)
         {
             lock(this)
             {
@@ -127,7 +127,7 @@ namespace Cwipc
                     {
                         int dampedSize = (int)(nPoints * allocationFactor);
                         if (computeBuffer != null) computeBuffer.Release();
-                        computeBuffer = new ComputeBuffer(dampedSize, sizeofPoint);
+                        computeBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, dampedSize, sizeofPoint);
                     }
                     computeBuffer.SetData(byteArray, 0, 0, currentSize);
                     return nPoints;

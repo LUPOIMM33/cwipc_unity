@@ -12,12 +12,12 @@ namespace Cwipc
     public interface IPointCloudPreparer : IPreparer
     {
         /// <summary>
-        /// Store pointcloud data of frame locked by LatchFrame in a ComputeBuffer.
-        /// ComputBuffer must be pre-allocated and will be increased in size to make the data fit.
+        /// Store pointcloud data of frame locked by LatchFrame in a GraphicsBuffer.
+        /// GraphicsBuffer must be pre-allocated and will be increased in size to make the data fit.
         /// </summary>
-        /// <param name="computeBuffer">Where the pointcloud data is stored.</param>
+        /// <param name="graphicsBuffer">Where the pointcloud data is stored.</param>
         /// <returns>Number of points in the pointcloud</returns>
-        public int GetComputeBuffer(ref ComputeBuffer computeBuffer);
+        public int FillGraphicsBuffer(ref GraphicsBuffer graphicsBuffer);
 
         /// <summary>
         /// Return size (in meters) of a single cell/point in the current pointcloud.
@@ -50,7 +50,7 @@ namespace Cwipc
     {
         abstract public void Synchronize();
         abstract public bool LatchFrame();
-        abstract public int GetComputeBuffer(ref ComputeBuffer computeBuffer);
+        abstract public int FillGraphicsBuffer(ref GraphicsBuffer computeBuffer);
         abstract public float GetPointSize();
         abstract public Timedelta getQueueDuration();
         abstract public bool EndOfData();

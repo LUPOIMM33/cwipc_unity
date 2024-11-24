@@ -16,7 +16,7 @@ namespace Cwipc
     /// </summary>
     public class PointCloudRenderer_VFX : MonoBehaviour
     {
-        ComputeBuffer pointBuffer = null;
+        GraphicsBuffer pointBuffer = null;
         int pointCount = 0;
         [Header("Settings")]
         [Tooltip("Source of pointclouds. Can (and must) be empty if set dynamically through script.")]
@@ -62,7 +62,7 @@ namespace Cwipc
             {
                 finished = new UnityEvent();
             }
-            pointBuffer = new ComputeBuffer(1, sizeof(float) * 4);
+            pointBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, 1, sizeof(float) * 4);
 
             if (pointcloudSource != null)
             {
@@ -117,7 +117,7 @@ namespace Cwipc
                     started.Invoke();
                 }
 
-                pointCount = preparer.GetComputeBuffer(ref pointBuffer);
+                pointCount = preparer.FillGraphicsBuffer(ref pointBuffer);
                 if (pointBuffer == null || !pointBuffer.IsValid())
                 {
                     Debug.LogError($"{Name()}: Invalid pointBuffer");
@@ -125,9 +125,7 @@ namespace Cwipc
                 }
                 pointSize = preparer.GetPointSize();
 
-                pointCount = ExtractDataFromComputeBuffer(pointBuffer, ref positions, ref colors);
-                Debug.Log($"{Name()}: Pass to VFX : {pointCount} points, ts={preparer.currentTimestamp}");
-                pc_VFX.PassToVFX(positions, colors);
+                pc_VFX.PassToVFX(pointBuffer, pointCount, pointSize);
             }
             else
             {
@@ -150,7 +148,7 @@ namespace Cwipc
                 pointBuffer = null;
             }
         }
-
+#if xxxjack_old
         private int ExtractDataFromComputeBuffer(ComputeBuffer computeBuffer, ref Vector4[] pointPositions, ref Color[] pointColors)
         {
             if (computeBuffer == null || computeBuffer.count == 0)
@@ -205,6 +203,7 @@ namespace Cwipc
 
             return nPoints;
         }
+#endif
 
 #if VRT_WITH_STATS
         protected class Stats : Statistics

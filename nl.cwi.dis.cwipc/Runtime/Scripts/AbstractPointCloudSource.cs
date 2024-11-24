@@ -197,7 +197,7 @@ namespace Cwipc
             return true;
         }
 
-        override public int GetComputeBuffer(ref ComputeBuffer computeBuffer)
+        override public int FillGraphicsBuffer(ref GraphicsBuffer computeBuffer)
         {
             int size = currentSize / 16; // Because every Point is a 16bytes sized, so I need to divide the buffer size by 16 to know how many points are.
             lock (this)
@@ -211,7 +211,7 @@ namespace Cwipc
                             int dampedSize = size + 4 + size / 4; // We allocate 25% (and a bit) more, so we don't see too many reallocations
 
                             if (computeBuffer != null) computeBuffer.Release();
-                            computeBuffer = new ComputeBuffer(dampedSize, sizeof(float) * 4);
+                            computeBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, dampedSize, sizeof(float) * 4);
                         }
                         computeBuffer.SetData(currentByteArray, 0, 0, currentByteArray.Length);
                     }

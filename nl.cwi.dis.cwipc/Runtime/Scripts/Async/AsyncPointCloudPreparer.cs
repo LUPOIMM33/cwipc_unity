@@ -141,7 +141,7 @@ namespace Cwipc
                 synchronizer.SetTimestampRangeForCurrentFrame(Name(), earliestTimestamp, latestTimestamp);
             }
         }
-        public int GetComputeBuffer(ref ComputeBuffer computeBuffer)
+        public int FillGraphicsBuffer(ref GraphicsBuffer computeBuffer)
         {
             const int sizeofPoint = sizeof(float) * 4;
             int nPoints = currentSize / sizeofPoint; // Because every Point is a 16bytes sized, so I need to divide the buffer size by 16 to know how many points are.
@@ -155,7 +155,7 @@ namespace Cwipc
                         {
                             int dampedSize = (int)(nPoints * allocationFactor);
                             if (computeBuffer != null) computeBuffer.Release();
-                            computeBuffer = new ComputeBuffer(dampedSize, sizeofPoint);
+                            computeBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, dampedSize, sizeofPoint);
                         }
                         computeBuffer.SetData(byteArray, 0, 0, currentSize);
                     }
