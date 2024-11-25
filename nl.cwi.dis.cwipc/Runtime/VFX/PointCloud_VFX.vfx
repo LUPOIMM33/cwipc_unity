@@ -22,7 +22,7 @@ MonoBehaviour:
     x: -1298
     y: -106
     width: 2663
-    height: 1340
+    height: 1452
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -66,8 +66,8 @@ MonoBehaviour:
   m_UISuperCollapsed: 0
   m_UIInfos: {fileID: 114340500867371532}
   m_ParameterInfo:
-  - name: Default Point Size
-    path: Default Point Size
+  - name: PointSize
+    path: PointSize
     tooltip: 
     sheetType: m_Float
     realType: Single
@@ -107,7 +107,7 @@ MonoBehaviour:
     max: Infinity
     enumValues: []
     descendantCount: 0
-  - name: Points
+  - name: DataBuffer
     path: 
     tooltip: 
     sheetType: 
@@ -603,7 +603,7 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children:
   - {fileID: 8926484042661614589}
-  m_UIPosition: {x: 941, y: 910}
+  m_UIPosition: {x: 941, y: 1018}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -617,7 +617,7 @@ MonoBehaviour:
       slotIndex: 0
   m_OutputFlowSlot:
   - link: []
-  blendMode: 1
+  blendMode: 3
   cullMode: 0
   zWriteMode: 0
   zTestMode: 0
@@ -1026,9 +1026,9 @@ MonoBehaviour:
   m_InputSlots: []
   m_OutputSlots:
   - {fileID: 8926484042661614620}
-  m_ExposedName: Points
+  m_ExposedName: DataBuffer
   m_Exposed: 1
-  m_Order: 3
+  m_Order: 2
   m_Category: Scripted
   m_Min:
     m_Type:
@@ -1722,7 +1722,7 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
   m_UIPosition: {x: 0, y: 0}
-  m_UICollapsed: 1
+  m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
   m_OutputSlots:
@@ -2052,7 +2052,7 @@ MonoBehaviour:
   m_InputSlots: []
   m_OutputSlots:
   - {fileID: 8926484042661615693}
-  m_ExposedName: Default Point Size
+  m_ExposedName: PointSize
   m_Exposed: 1
   m_Order: 1
   m_Category: 

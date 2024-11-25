@@ -6,18 +6,15 @@ using UnityEngine.VFX;
 public class PointCloud_VFX : MonoBehaviour
 {
     public VisualEffect vfxGraph;
-    private string positionParameterName = "Points";
+    private string DataBufferParameterName = "DataBuffer";
     private string pointCountName = "PointCount";
+    private string pointSizeName = "PointSize";
 
-    public void PassToVFX(GraphicsBuffer pointBuffer, int nPoint, float PointSize)
+    public void PassToVFX(GraphicsBuffer DataBuffer, int nPoint, float PointSize)
     {
-
-    vfxGraph.SetGraphicsBuffer(positionParameterName, pointBuffer);
-    vfxGraph.SetInt(pointCountName, nPoint);
-#if xxxjack_notyet
-    // it seems pointSize isn't passed to the graphics pipeline yet. Lucas?
-    vfxGraph.SetInt(pointSizeName, pointSize);
-#endif
+        vfxGraph.SetGraphicsBuffer(DataBufferParameterName, DataBuffer);
+        vfxGraph.SetInt(pointCountName, nPoint);
+        vfxGraph.SetFloat(pointSizeName, PointSize);
     }
 
 }

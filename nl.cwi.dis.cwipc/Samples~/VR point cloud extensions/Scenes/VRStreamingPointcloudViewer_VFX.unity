@@ -526,6 +526,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: cwipc_playback_stream_VFX
       objectReference: {fileID: 0}
+    - target: {fileID: 2707595360733433796, guid: 0e750d474f5a228419f129beb3c0fb5c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7685907095956398021, guid: 0e750d474f5a228419f129beb3c0fb5c, type: 3}
       propertyPath: pc_VFX
       value: 
@@ -648,6 +652,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3311035371631511807, guid: 42fa2e4bd0874814f87e321dbb2cfc30, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4740138610867779858, guid: 42fa2e4bd0874814f87e321dbb2cfc30, type: 3}
       propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[0].m_Overridden
       value: 0
@@ -655,6 +663,10 @@ PrefabInstance:
     - target: {fileID: 8337379357888951531, guid: 42fa2e4bd0874814f87e321dbb2cfc30, type: 3}
       propertyPath: m_Name
       value: PointCloud_VFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 8337379357888951531, guid: 42fa2e4bd0874814f87e321dbb2cfc30, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
