@@ -307,6 +307,44 @@ namespace Cwipc
 
         }
 
+#if UNITY_EDITOR_WIN
+        private class API_kernel
+        {
+            [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+            public static extern IntPtr GetModuleHandle(string lpModuleName);
+            [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+            public static extern int GetModuleFileName(IntPtr hModule, System.Text.StringBuilder modulePath, int nSize);
+            [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+            public static extern IntPtr LoadLibrary(string lpFileName);
+        }; 
+        
+        static public string GetCwipcDLLDirectory()
+        {
+            try
+            {
+                delegate_cwipc_synthetic tmp = _API_cwipc_util.cwipc_synthetic;
+                IntPtr tmp2 = Marshal.GetFunctionPointerForDelegate(tmp);
+                UnityEngine.Debug.Log($"GetCwipcDLLDirectory: loaded cwipc_synthetic from {_API_cwipc_util.myDllName} at 0x{tmp2:X}");
+            }
+            catch (System.TypeLoadException e)
+            {
+                UnityEngine.Debug.LogWarning($"GetCwipcDLLDirectory: cannot load cwipc_util DLL.");
+                return null;
+            }
+            IntPtr hMod = API_kernel.GetModuleHandle(_API_cwipc_util.myDllName);
+            if (hMod == IntPtr.Zero)
+            {
+                UnityEngine.Debug.LogWarning($"GetCwipcDLLDirectory: GetModuleHandle failed for {_API_cwipc_util.myDllName}");
+                return null;
+            }
+            var cwipc_util_path = new System.Text.StringBuilder(1024);
+            API_kernel.GetModuleFileName(hMod, cwipc_util_path, cwipc_util_path.Capacity);
+            string path = System.IO.Path.GetDirectoryName(cwipc_util_path.ToString());
+            return path;
+        }
+
+#endif
+
         public class cwipc_auxiliary_data
         {
             protected IntPtr _pointer;
@@ -384,7 +422,9 @@ namespace Cwipc
 
             ~pointcloud()
             {
-                free();
+                if (pointer != IntPtr.Zero) {
+                    free();
+                }
             }
 
             protected override void onfree()
