@@ -10,11 +10,16 @@ public class PointCloud_VFX : MonoBehaviour
     private string pointCountName = "PointCount";
     private string pointSizeName = "PointSize";
 
+    [SerializeField] private bool _passPointSize = true;
+
     public void PassToVFX(GraphicsBuffer DataBuffer, int nPoint, float PointSize)
     {
         vfxGraph.SetGraphicsBuffer(DataBufferParameterName, DataBuffer);
         vfxGraph.SetInt(pointCountName, nPoint);
-        vfxGraph.SetFloat(pointSizeName, PointSize);
+        if (_passPointSize)
+        {
+            vfxGraph.SetFloat(pointSizeName, PointSize);
+        }
     }
 
 }
