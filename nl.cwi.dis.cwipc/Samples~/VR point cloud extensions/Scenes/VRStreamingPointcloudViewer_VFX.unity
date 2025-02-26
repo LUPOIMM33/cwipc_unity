@@ -482,10 +482,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 690777003809042976, guid: 0e750d474f5a228419f129beb3c0fb5c, type: 3}
-      propertyPath: url
-      value: tcp://192.168.105.113:4303/
-      objectReference: {fileID: 0}
     - target: {fileID: 2707595360733433793, guid: 0e750d474f5a228419f129beb3c0fb5c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
