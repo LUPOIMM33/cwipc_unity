@@ -57,7 +57,7 @@ namespace Cwipc
                 Debug.Log(Name() + ": Stopping current playback to start new one");
                 yield return stopPlay();
             }
-
+            url = new_url;
             cur_reader = Object.Instantiate(reader_prefab, base.transform);
             cur_renderer = Object.Instantiate(renderer_prefab, base.transform);
             cur_renderer.pointcloudSource = cur_reader;
