@@ -44,44 +44,51 @@ namespace Cwipc
 
         public void Play(string new_url)
         {
+            Debug.Log(Name() + ": Ask Play(" + new_url + ")");
+            StartCoroutine(startPlay(new_url));
+        }
+
+
+        private IEnumerator startPlay(string new_url)
+        {
+            Debug.Log(Name() + ": Starting playback of " + new_url);
             if (cur_reader != null || cur_renderer != null)
             {
-                Debug.LogError($"{Name()}: Play() called while playing");
-                return;
+                Debug.Log(Name() + ": Stopping current playback to start new one");
+                yield return stopPlay();
             }
-            cur_reader = Instantiate(reader_prefab, transform);
-            cur_renderer = Instantiate(renderer_prefab, transform);
+
+            cur_reader = Object.Instantiate(reader_prefab, base.transform);
+            cur_renderer = Object.Instantiate(renderer_prefab, base.transform);
             cur_renderer.pointcloudSource = cur_reader;
             cur_renderer.started.AddListener(RendererStarted);
             cur_renderer.finished.AddListener(RendererFinished);
-            Debug.Log($"{Name()}: Play({url})");
-            url = new_url;
-            StartCoroutine(startPlay());
-        }
-
-        private IEnumerator startPlay()
-        {
+            
             yield return null;
             StreamedPointCloudReader rdr = cur_reader as StreamedPointCloudReader;
-            if (rdr != null) 
+            if (rdr != null)
             {
                 rdr.url = url;
             }
+
             cur_reader.gameObject.SetActive(true);
             cur_renderer.gameObject.SetActive(true);
+            Debug.Log($"{Name()}: Started playback of {new_url}");
         }
 
         public void Stop()
         {
-            if (cur_reader != null || cur_renderer != null)
-            {
-                Debug.Log($"{Name()}: Stop");
-                StartCoroutine(stopPlay());
-            }
+            Debug.Log($"{Name()}: Ask Stop");
+            StartCoroutine(stopPlay());
         }
 
         private IEnumerator stopPlay()
         {
+            Debug.Log($"{Name()}: Stopping playback");
+            if (cur_reader == null && cur_renderer == null)
+            {
+                yield break;
+            }
             yield return null;
             cur_reader.Stop();
             finished.Invoke(); // xxxjack or should this be done after the fade out?
@@ -91,6 +98,7 @@ namespace Cwipc
             Destroy(cur_renderer.gameObject);
             cur_reader = null;
             cur_renderer = null;
+            Debug.Log($"{Name()}: Stopped playback");
         }
 
         private void RendererStarted()
