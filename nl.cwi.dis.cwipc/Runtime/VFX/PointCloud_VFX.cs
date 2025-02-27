@@ -22,4 +22,9 @@ public class PointCloud_VFX : MonoBehaviour
         }
     }
 
+    public void Enable_VFX(bool enable)
+    {
+        vfxGraph.enabled = enable;
+    }
+
 }

@@ -17,10 +17,8 @@ namespace Cwipc
         public PointCloudRenderer_VFX renderer_prefab;
         [Tooltip("If true start playback on Start")]
         public bool playOnStart = false;
-        [Tooltip("Number of times point cloud stream is looped (zero: forever)")]
-        public int loopCount = 0;
         [Tooltip("Directory with point cloud files")]
-        public string dirName = "";
+        public string url = "";
         [Tooltip("Invoked when playback starts")]
         public UnityEvent started;
         [Tooltip("Invoked when playback finishes")]
@@ -35,17 +33,16 @@ namespace Cwipc
             return $"{GetType().Name}";
         }
 
-
         // Start is called before the first frame update
         void Start()
         {
             if (playOnStart)
             {
-                Play(dirName);
+                Play(url);
             }
         }
 
-        public void Play(string _dirName)
+        public void Play(string new_url)
         {
             if (cur_reader != null || cur_renderer != null)
             {
@@ -55,53 +52,23 @@ namespace Cwipc
             cur_reader = Instantiate(reader_prefab, transform);
             cur_renderer = Instantiate(renderer_prefab, transform);
             cur_renderer.pointcloudSource = cur_reader;
-            Debug.Log($"{Name()}: Play({dirName})");
-            dirName = _dirName;
+            cur_renderer.started.AddListener(RendererStarted);
+            cur_renderer.finished.AddListener(RendererFinished);
+            Debug.Log($"{Name()}: Play({url})");
+            url = new_url;
             StartCoroutine(startPlay());
         }
 
         private IEnumerator startPlay()
         {
             yield return null;
-            PrerecordedPointCloudReader rdr = cur_reader as PrerecordedPointCloudReader;
-            if (rdr != null) {
-                rdr.dirName = dirName;
-                rdr.loopCount = loopCount;
+            StreamedPointCloudReader rdr = cur_reader as StreamedPointCloudReader;
+            if (rdr != null) 
+            {
+                rdr.url = url;
             }
             cur_reader.gameObject.SetActive(true);
             cur_renderer.gameObject.SetActive(true);
-        }
-
-        private void preloadThread()
-        {
-            string[] filenames = System.IO.Directory.GetFileSystemEntries(dirName);
-            foreach(var filename in filenames)
-            {
-                byte[] dummy = System.IO.File.ReadAllBytes(filename);
-            }
-        }
-
-        private IEnumerator stopPlay()
-        {
-            yield return null;
-            cur_reader.Stop();
-            finished.Invoke(); // xxxjack or should this be done after the fade out?
-            Destroy(cur_reader.gameObject);
-            Destroy(cur_renderer.gameObject);
-            cur_reader = null;
-            cur_renderer = null;
-        }
-
-        public void RendererStarted()
-        {
-            Debug.Log($"{Name()}: Renderer started");
-            started.Invoke();
-        }
-
-        public void RendererFinished()
-        {
-            Debug.Log($"{Name()}: Renderer finished");
-            StartCoroutine(stopPlay());
         }
 
         public void Stop()
@@ -111,6 +78,31 @@ namespace Cwipc
                 Debug.Log($"{Name()}: Stop");
                 StartCoroutine(stopPlay());
             }
+        }
+
+        private IEnumerator stopPlay()
+        {
+            yield return null;
+            cur_reader.Stop();
+            finished.Invoke(); // xxxjack or should this be done after the fade out?
+            cur_renderer.started.RemoveListener(RendererStarted);
+            cur_renderer.finished.RemoveListener(RendererFinished);
+            Destroy(cur_reader.gameObject);
+            Destroy(cur_renderer.gameObject);
+            cur_reader = null;
+            cur_renderer = null;
+        }
+
+        private void RendererStarted()
+        {
+            Debug.Log($"{Name()}: Renderer started");
+            started.Invoke();
+        }
+
+        private void RendererFinished()
+        {
+            Debug.Log($"{Name()}: Renderer finished");
+            StartCoroutine(stopPlay());
         }
     }
 }

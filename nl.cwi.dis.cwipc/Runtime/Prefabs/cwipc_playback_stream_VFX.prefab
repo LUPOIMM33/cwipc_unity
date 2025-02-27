@@ -49,8 +49,7 @@ MonoBehaviour:
   reader_prefab: {fileID: 690777003809042976}
   renderer_prefab: {fileID: 7685907095956398021}
   playOnStart: 1
-  loopCount: 0
-  dirName: 
+  url: tcp://192.168.105.113:4303/
   started:
     m_PersistentCalls:
       m_Calls: []
@@ -111,7 +110,7 @@ MonoBehaviour:
   voxelSize: 0
   defaultCellSize: 0.01
   cellSizeFactor: 1
-  url: tcp://192.16.197.145:8089/
+  url: 
   defaultPointSize: 0
 --- !u!1 &8438459669963633328
 GameObject:
@@ -158,7 +157,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointcloudSource: {fileID: 0}
-  vfxGraph: {fileID: 0}
   pc_VFX: {fileID: 0}
   started:
     m_PersistentCalls:
