@@ -27,4 +27,9 @@ public class PointCloud_VFX : MonoBehaviour
         vfxGraph.enabled = enable;
     }
 
+    public void SetPointSize(float PointSize)
+    {
+        vfxGraph.SetFloat(pointSizeName, PointSize);
+    }
+
 }
