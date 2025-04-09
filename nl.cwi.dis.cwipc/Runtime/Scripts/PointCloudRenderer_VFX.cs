@@ -228,13 +228,17 @@ namespace Cwipc
 
     public float GetPointSize()
     {
-        if(VFX_elems.Count > 0)
+        if(VFX_elems != null && VFX_elems.Count > 0)
         {
             VFX_ELemRenderer renderer = VFX_elems[0].GetComponent<VFX_ELemRenderer>();
             if (renderer != null)
             {
                 return renderer.vfxGraph.GetFloat("PointSize");
             }
+        }
+        else
+        {
+            return VFX_Elem_prefab.GetComponent<VFX_ELemRenderer>().vfxGraph.GetFloat("PointSize");
         }
         return 0.0f;
     }

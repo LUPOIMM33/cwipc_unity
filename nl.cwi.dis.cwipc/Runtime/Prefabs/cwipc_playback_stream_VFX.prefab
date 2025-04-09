@@ -157,7 +157,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointcloudSource: {fileID: 0}
-  pc_VFX: {fileID: 0}
+  VFX_Elem_prefab: {fileID: 8337379357888951531, guid: 42fa2e4bd0874814f87e321dbb2cfc30, type: 3}
+  Reference: {fileID: 0}
+  VFX_Elem_ChunkSize: 10000
+  limitChunks: 0
+  Chunklimit: 1
   started:
     m_PersistentCalls:
       m_Calls:
