@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.VFX;
 using System;
+using System.Collections.Generic;
+
 #if VRT_WITH_STATS
 using Statistics = Cwipc.Statistics;
 #endif
@@ -24,7 +26,11 @@ namespace Cwipc
         public IPointCloudPreparer preparer;
 
         [Header("VFX Settings")]
-        public PointCloud_VFX pc_VFX;
+        public GameObject VFX_Elem_prefab;
+        public Transform Reference;
+        public int VFX_Elem_ChunkSize = 10000;
+        public bool limitChunks = false;
+        public int Chunklimit = 1;
 
         [Header("Events")]
         [Tooltip("Event emitted when the first point cloud is displayed")]
@@ -40,6 +46,8 @@ namespace Cwipc
 
         static int instanceCounter = 0;
         int instanceNumber = instanceCounter++;
+
+        private List<GameObject> VFX_elems;
 
         public string Name()
         {
@@ -64,7 +72,7 @@ namespace Cwipc
                 SetPreparer(pointcloudSource);
             }
 
-            pc_VFX.Enable_VFX(true);
+            VFX_elems = new List<GameObject>();
 
 #if VRT_WITH_STATS
             stats = new Stats(Name());
@@ -118,7 +126,7 @@ namespace Cwipc
                 }
                 pointSize = preparer.GetPointSize();
 
-                pc_VFX.PassToVFX(pointBuffer, pointCount, pointSize);
+                Render(pointBuffer, pointCount, pointSize);
             }
             else
             {
@@ -140,9 +148,96 @@ namespace Cwipc
                 pointBuffer.Release();
                 pointBuffer = null;
             }
-
-            pc_VFX.Enable_VFX(false);
         }
+
+    private void Render(GraphicsBuffer dataBuffer, int nPoints, float pointSize)
+    {
+        int optimalChunksCount;
+        if (dataBuffer == null || nPoints == 0)
+        {
+            optimalChunksCount = 0;
+        }
+        else
+        {
+            optimalChunksCount = 1 + nPoints / VFX_Elem_ChunkSize;
+        }
+        int nChunks = optimalChunksCount;
+        if(limitChunks && optimalChunksCount > Chunklimit)
+        {
+            nChunks = Mathf.Max(0, Chunklimit);
+        }
+        
+        if (VFX_elems.Count < nChunks)
+            AddElems(nChunks - VFX_elems.Count);
+        if (VFX_elems.Count > nChunks)
+            RemoveElems(VFX_elems.Count - nChunks);
+
+        for (int chunkIndex = 0; chunkIndex < nChunks; chunkIndex++)
+        {
+            VFX_ELemRenderer renderer = VFX_elems[chunkIndex].GetComponent<VFX_ELemRenderer>();
+            renderer.PassToVFX(dataBuffer, nPoints, chunkIndex, nChunks, pointSize);
+        }
+    }
+
+    private void AddElems(int nElems)
+    {
+        for (int i = 0; i < nElems; i++)
+        {
+            GameObject newElem = GameObject.Instantiate(VFX_Elem_prefab);
+            newElem.transform.parent = Reference;
+            newElem.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+            newElem.transform.localRotation = Quaternion.identity;
+            newElem.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+
+            VFX_elems.Add(newElem);
+        }            
+    }
+
+    private void RemoveElems(int nElems)
+    {
+        for (int i = 0; i < nElems; i++)
+        {
+            Destroy(VFX_elems[0]);
+            VFX_elems.Remove(VFX_elems[0]);
+        }
+    }
+
+    public void EnableRenderer(bool enable)
+    {
+        foreach(GameObject elem in VFX_elems)
+        {
+            VFX_ELemRenderer renderer = elem.GetComponent<VFX_ELemRenderer>();
+            if (renderer != null)
+            {
+                renderer.Enable_VFX(enable);
+            }
+        }
+    }
+
+    public void SetPointSize(float pointSize)
+    {
+        foreach (GameObject elem in VFX_elems)
+        {
+            VFX_ELemRenderer renderer = elem.GetComponent<VFX_ELemRenderer>();
+            if (renderer != null)
+            {
+                renderer.SetPointSize(pointSize);
+            }
+        }
+    }
+
+    public float GetPointSize()
+    {
+        if(VFX_elems.Count > 0)
+        {
+            VFX_ELemRenderer renderer = VFX_elems[0].GetComponent<VFX_ELemRenderer>();
+            if (renderer != null)
+            {
+                return renderer.vfxGraph.GetFloat("PointSize");
+            }
+        }
+        return 0.0f;
+    }
 
 #if VRT_WITH_STATS
         protected class Stats : Statistics

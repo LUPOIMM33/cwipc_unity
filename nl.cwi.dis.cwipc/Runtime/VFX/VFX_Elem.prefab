@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4740138610867779858}
   - component: {fileID: 3311035371631511807}
   m_Layer: 0
-  m_Name: PointCloud_VFX
+  m_Name: VFX_Elem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
