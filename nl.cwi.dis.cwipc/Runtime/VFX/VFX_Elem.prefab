@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vfxGraph: {fileID: 4740138610867779858}
+  _passPointSize: 0
 --- !u!2083052967 &4740138610867779858
 VisualEffect:
   m_ObjectHideFlags: 0

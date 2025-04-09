@@ -216,13 +216,20 @@ namespace Cwipc
 
     public void SetPointSize(float pointSize)
     {
-        foreach (GameObject elem in VFX_elems)
+        if(VFX_elems != null && VFX_elems.Count > 0)
         {
-            VFX_ELemRenderer renderer = elem.GetComponent<VFX_ELemRenderer>();
-            if (renderer != null)
+            foreach (GameObject elem in VFX_elems)
             {
-                renderer.SetPointSize(pointSize);
+                VFX_ELemRenderer renderer = elem.GetComponent<VFX_ELemRenderer>();
+                if (renderer != null)
+                {
+                    renderer.SetPointSize(pointSize);
+                }
             }
+        }
+        else
+        {
+            VFX_Elem_prefab.GetComponent<VFX_ELemRenderer>().SetPointSize(pointSize);
         }
     }
 

@@ -2012,7 +2012,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615693}
   m_ExposedName: PointSize
   m_Exposed: 1
-  m_Order: 3
+  m_Order: 1
   m_Category: Scripted
   m_Min:
     m_Type:
@@ -4659,7 +4659,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615815}
   m_ExposedName: ChunkIndex
   m_Exposed: 1
-  m_Order: 4
+  m_Order: 2
   m_Category: Scripted
   m_Min:
     m_Type:
@@ -4742,7 +4742,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615817}
   m_ExposedName: ChunkCount
   m_Exposed: 1
-  m_Order: 5
+  m_Order: 3
   m_Category: Scripted
   m_Min:
     m_Type:
@@ -4822,7 +4822,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615819}
   m_ExposedName: TotalPointCount
   m_Exposed: 1
-  m_Order: 6
+  m_Order: 4
   m_Category: Scripted
   m_Min:
     m_Type:
