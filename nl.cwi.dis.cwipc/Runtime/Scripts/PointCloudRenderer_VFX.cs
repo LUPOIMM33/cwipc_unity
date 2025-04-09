@@ -227,10 +227,8 @@ namespace Cwipc
                 }
             }
         }
-        else
-        {
-            VFX_Elem_prefab.GetComponent<VFX_ELemRenderer>().SetPointSize(pointSize);
-        }
+
+        VFX_Elem_prefab.GetComponent<VFX_ELemRenderer>().SetPointSize(pointSize);
     }
 
     public float GetPointSize()
