@@ -569,6 +569,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1186380096}
     - target: {fileID: 7685907095956398021, guid: 0e750d474f5a228419f129beb3c0fb5c, type: 3}
+      propertyPath: LayerMask.m_Bits
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7685907095956398021, guid: 0e750d474f5a228419f129beb3c0fb5c, type: 3}
+      propertyPath: VFX_LayerMask.m_Bits
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7685907095956398021, guid: 0e750d474f5a228419f129beb3c0fb5c, type: 3}
       propertyPath: pc_VFX_element_prefab
       value: 
       objectReference: {fileID: 8337379357888951531, guid: 42fa2e4bd0874814f87e321dbb2cfc30, type: 3}

@@ -188,6 +188,7 @@ namespace Cwipc
             newElem.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
             newElem.transform.localRotation = Quaternion.identity;
             newElem.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            newElem.layer = Reference.gameObject.layer;
 
             VFX_elems.Add(newElem);
         }            
