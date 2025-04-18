@@ -148,6 +148,14 @@ namespace Cwipc
                 pointBuffer.Release();
                 pointBuffer = null;
             }
+            if (VFX_elems != null)
+            {
+                foreach (GameObject elem in VFX_elems)
+                {
+                    Destroy(elem);
+                }
+                VFX_elems.Clear();
+            }
         }
 
     private void Render(GraphicsBuffer dataBuffer, int nPoints, float pointSize)

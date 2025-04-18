@@ -42,12 +42,17 @@ namespace Cwipc
             }
         }
 
+        [ContextMenu("Play")]
+        public void Play()
+        {
+            Play(url);
+        }
+
         public void Play(string new_url)
         {
             Debug.Log(Name() + ": Ask Play(" + new_url + ")");
             StartCoroutine(startPlay(new_url));
         }
-
 
         private IEnumerator startPlay(string new_url)
         {
@@ -76,6 +81,7 @@ namespace Cwipc
             Debug.Log($"{Name()}: Started playback of {new_url}");
         }
 
+        [ContextMenu("Stop")]
         public void Stop()
         {
             Debug.Log($"{Name()}: Ask Stop");
