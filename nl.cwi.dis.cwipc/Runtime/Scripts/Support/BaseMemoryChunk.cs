@@ -154,7 +154,7 @@ namespace Cwipc
                 {
                     if (refCount <= 0)
                     {
-                        throw new Exception($"BaseMemoryChunk.pointer: refCount={refCount}");
+                        return IntPtr.Zero;
                     }
                     return _pointer;
                 }
